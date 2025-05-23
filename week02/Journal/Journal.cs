@@ -8,15 +8,19 @@ public class Journal
 
     public void Write()
     {
-        string prompt = PromptGenerator.GetPrompt();
+        string prompt = GetPrompt.GetPrompt();
         Console.WriteLine($"{prompt}");
-        Console.Write(">");
+        Console.Write("> ");
         string entry = Console.ReadLine();
+        _entry.Add(entry);
     }
 
     public void Display()
     {
-        Console.WriteLine($"Entry: {Write}");
+        foreach (string entry in _entry)
+        {
+            Console.WriteLine($"Entry:{entry}");
+        }
     }
 
     public void Save()
@@ -25,8 +29,9 @@ public class Journal
         string filename = Console.ReadLine();
 
         using (StreamWriter outputFile = new StreamWriter(filename))
+        foreach (string entry in _entry)
         {
-            outputFile.WriteLine($"New Entry: {_entry}");
+            outputFile.WriteLine(entry);
         }
     }
 
@@ -34,7 +39,7 @@ public class Journal
     {
         Console.Write("Please enter the file nae you would like to load from: ");
         string filename = Console.ReadLine();
-        string[] lines = System.IO.File.ReadAllLines(filename);
+        _entry.AddRange(System.IO.File.ReadAllLines(filename));
     }
 
 
